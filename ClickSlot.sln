@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickSlot", "ClickSlot\ClickSlot.csproj", "{3A9B4619-E356-4B0A-836D-C1BA5E445CBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickSlotWebAPI", "ClickSlotWebAPI\ClickSlotWebAPI.csproj", "{3A9B4619-E356-4B0A-836D-C1BA5E445CBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickSlotDAL", "ClickSlotDAL\ClickSlotDAL.csproj", "{A458AE25-3D88-4D4D-8F83-6C701E3A5B46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3A9B4619-E356-4B0A-836D-C1BA5E445CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A9B4619-E356-4B0A-836D-C1BA5E445CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A9B4619-E356-4B0A-836D-C1BA5E445CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A458AE25-3D88-4D4D-8F83-6C701E3A5B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A458AE25-3D88-4D4D-8F83-6C701E3A5B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A458AE25-3D88-4D4D-8F83-6C701E3A5B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A458AE25-3D88-4D4D-8F83-6C701E3A5B46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

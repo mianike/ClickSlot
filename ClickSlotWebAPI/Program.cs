@@ -1,5 +1,5 @@
 
-namespace ClickSlot
+namespace ClickSlotWebAPI
 {
     public class Program
     {
