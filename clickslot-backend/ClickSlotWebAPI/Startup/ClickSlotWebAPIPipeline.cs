@@ -7,8 +7,6 @@ namespace ClickSlotWebAPI.Startup
     {
         public static void InitializePipeline(this WebApplication app, WebApplicationBuilder builder)
         {
-            app.UseStaticFiles();
-
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -25,13 +23,6 @@ namespace ClickSlotWebAPI.Startup
             app.MapControllers();
 
             app.UseCors();
-
-            app.UseFileServer(new FileServerOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "frontend")),
-                RequestPath = "",
-                EnableDefaultFiles = true
-            });
         }
     }
 }

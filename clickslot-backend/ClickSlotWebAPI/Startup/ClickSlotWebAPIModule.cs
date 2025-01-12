@@ -58,9 +58,6 @@ namespace ClickSlotWebAPI.Startup
 
             builder.Services.AddAutoMapper(typeof(ClickSlotMappingProfile));
 
-            //TODO: add FluentValidation
-            //builder.Services.AddTransient<IValidator<FeedbackViewModel>, FeedbackViewModelValidator>();
-
             ClickSlotDALModule.RegisterModule(builder.Services, builder.Configuration);
             ClickSlotCoreModule.RegisterModule(builder.Services);
         }
