@@ -8,11 +8,11 @@ namespace ClickSlotWebAPI.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthenticationController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IUserManagementService _userManagementService;
 
-        public AuthenticationController(IUserManagementService userManagementService)
+        public AuthController(IUserManagementService userManagementService)
         {
             _userManagementService = userManagementService;
         }
