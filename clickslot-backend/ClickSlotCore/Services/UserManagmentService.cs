@@ -1,7 +1,6 @@
 ﻿using ClickSlotCore.Contracts.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using ClickSlotModel.DTOs;
-using ClickSlotModel.Enums;
 using ClickSlotCore.Contracts.Interfaces.Entity;
 
 namespace ClickSlotCore.Services

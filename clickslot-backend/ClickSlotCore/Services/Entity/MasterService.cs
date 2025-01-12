@@ -19,15 +19,26 @@ namespace ClickSlotCore.Services.Entity
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AppUserDTO>> GetAllMastersAsync()
+        public async Task<IEnumerable<AppUserDTO>> GetMastersAsync(string search, int page, int pageSize)
         {
             try
             {
                 var repository = _unitOfWork.GetRepository<AppUser>();
 
-                var appUsers = await repository
-                    .AsReadOnlyQueryable()
-                    .Where(u => u.Role == AppUserRole.Master)
+                IQueryable<AppUser> query = repository.AsReadOnlyQueryable()
+                    .Where(u => u.Role == AppUserRole.Master && u.Offerings.Any())
+                    .Include(u => u.Offerings);
+
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    query = query.Where(u => u.Name.ToLower().Contains(search.ToLower())
+                    || u.Offerings.Any(o => o.Name.ToLower().Contains(search.ToLower())));
+                }
+
+                var appUsers = await query
+                    .OrderBy(u => u.Name)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
                     .ToListAsync();
 
                 return _mapper.Map<IEnumerable<AppUserDTO>>(appUsers);
@@ -37,50 +48,5 @@ namespace ClickSlotCore.Services.Entity
                 throw new ApplicationException($"Error occurred while retrieving masters: {ex.Message}", ex);
             }
         }
-
-        public async Task<IEnumerable<AppUserDTO>> GetMastersByOfferingNameAsync(string offeringName)
-        {
-            try
-            {
-                var repository = _unitOfWork.GetRepository<AppUser>();
-
-                var appUsers = await repository
-                    .AsReadOnlyQueryable()
-                    .Where(u => u.Role == AppUserRole.Master && u.Offerings
-                        .Any(o => o.Name.
-                            ToLower()
-                            .Contains(offeringName.ToLower())))
-                    .Include(u => u.Offerings)
-                    .ToListAsync();
-
-                return _mapper.Map<IEnumerable<AppUserDTO>>(appUsers);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Error occurred while retrieving masters by offering name '{offeringName}': {ex.Message}", ex);
-            }
-        }
-
-        public async Task<IEnumerable<AppUserDTO>> GetMastersByNameAsync(string masterName)
-        {
-            try
-            {
-                var repository = _unitOfWork.GetRepository<AppUser>();
-
-                var appUsers = await repository
-                    .AsReadOnlyQueryable()
-                    .Where(u => u.Role == AppUserRole.Master && u.Name
-                        .ToLower()
-                        .Contains(masterName.ToLower()))
-                    .ToListAsync();
-
-                return _mapper.Map<IEnumerable<AppUserDTO>>(appUsers);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Error occurred while retrieving masters by name '{masterName}': {ex.Message}", ex);
-            }
-        }
-
     }
 }

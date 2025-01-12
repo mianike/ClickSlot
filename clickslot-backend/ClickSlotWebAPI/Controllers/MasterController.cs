@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using ClickSlotCore.Contracts.Interfaces.Entity;
 using ClickSlotWebAPI.Models.Response;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static ClickSlotWebAPI.Models.Response.AppUserResponse;
 
 namespace ClickSlotWebAPI.Controllers
 {
@@ -21,26 +19,12 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMasters()
+        public async Task<IActionResult> GetMasters(
+            string? search = null,
+            int page = 1,
+            int pageSize = 10)
         {
-            var masterDtos = await _masterService.GetAllMastersAsync();
-            var masterResponses = _mapper.Map<List<AppUserResponse>>(masterDtos);
-
-            return Ok(masterResponses);
-        }
-
-        [HttpGet("offering/{offeringName}")]
-        public async Task<IActionResult> GetMastersByOfferingName(string offeringName)
-        {
-            var masterDtos = await _masterService.GetMastersByOfferingNameAsync(offeringName);
-            var masterResponses = _mapper.Map<List<AppUserResponse>>(masterDtos);
-            return Ok(masterResponses);
-        }
-
-        [HttpGet("name/{masterName}")]
-        public async Task<IActionResult> GetMastersByName(string masterName)
-        {
-            var masterDtos = await _masterService.GetMastersByNameAsync(masterName);
+            var masterDtos = await _masterService.GetMastersAsync(search, page, pageSize);
             var masterResponses = _mapper.Map<List<AppUserResponse>>(masterDtos);
             return Ok(masterResponses);
         }

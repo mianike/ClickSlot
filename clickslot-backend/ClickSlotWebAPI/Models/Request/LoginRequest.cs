@@ -11,5 +11,4 @@ namespace ClickSlotWebAPI.Models.Request
         [Required]
         public string Password { get; set; }
     }
-
 }

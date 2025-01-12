@@ -2,6 +2,7 @@
 using ClickSlotCore.Contracts.Interfaces;
 using ClickSlotModel.DTOs;
 using ClickSlotWebAPI.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClickSlotWebAPI.Controllers
 {
@@ -17,6 +18,7 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var appUserDto = new AppUserDTO()
@@ -34,10 +36,19 @@ namespace ClickSlotWebAPI.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok("User registered successfully.");
+            try
+            {
+                var token = await _userManagementService.LoginAsync(request.Email, request.Password);
+                return Ok(new { Token = token });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             try
@@ -49,6 +60,18 @@ namespace ClickSlotWebAPI.Controllers
             {
                 return Unauthorized(ex.Message);
             }
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetCurrentUser()
+        {
+            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            return Ok(currentUser);
         }
     }
 }
