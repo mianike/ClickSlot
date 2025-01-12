@@ -37,38 +37,37 @@ const HomePage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <h1 className="text-4xl font-bold text-gray-800 mb-6">
         Добро пожаловать на ClickSlot!
-      </h1>
+      </h1>  
+      <p className="text-lg text-gray-600 mb-10">ClickSlot - удобный сервис бронирования услуг</p>
 
-      {/* Кнопка Список мастеров всегда видна */}
-      <Link
-        href="/masters"
-        className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition mb-4">
-        Список мастеров
-      </Link>
+      {/* Контейнер для кнопок с горизонтальным расположением */}
+      <div className="flex space-x-4 mb-6"> {/* Добавлен space-x-4 для горизонтального расстояния */}
+        {/* Кнопка Список мастеров всегда видна */}
+        <Link
+          href="/masters"
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
+          Список мастеров
+        </Link>
 
-      {loading ? (
-        // Индикатор загрузки, можно добавить что-то визуально красивое
-        <p>Загрузка...</p>
-      ) : user ? (
-        // Если данные о пользователе получены
-        <>
-          <p className="text-lg text-gray-600 mb-4">
-            Здравствуйте, {user.name}!
-          </p>
+        {loading ? (
+          // Индикатор загрузки
+          <p>Загрузка...</p>
+        ) : user ? (
+          // Если данные о пользователе получены
           <Link
             href="/dashboard"
             className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
             Перейти в личный кабинет
           </Link>
-        </>
-      ) : (
-        // Если пользователь не авторизован
-        <Link
-          href="/auth"
-          className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
-          Войти/Зарегистрироваться
-        </Link>
-      )}
+        ) : (
+          // Если пользователь не авторизован
+          <Link
+            href="/auth"
+            className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
+            Войти/Зарегистрироваться
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
