@@ -45,16 +45,16 @@ namespace ClickSlotCore.Services.Entity
             {
                 var repository = _unitOfWork.GetRepository<AppUser>();
 
-                var appUsers = await repository
+                var appUser = await repository
                     .AsReadOnlyQueryable()
                     .FirstOrDefaultAsync(u => u.Id == id);
 
-                if (appUsers == null)
+                if (appUser == null)
                 {
                     throw new KeyNotFoundException($"AppUser with id {id} not found");
                 }
 
-                return _mapper.Map<AppUserDTO>(appUsers);
+                return _mapper.Map<AppUserDTO>(appUser);
             }
             catch (Exception ex)
             {
@@ -69,12 +69,12 @@ namespace ClickSlotCore.Services.Entity
         {
             try
             {
-                var appUsers = _mapper.Map<AppUser>(appUserDto);
+                var appUser = _mapper.Map<AppUser>(appUserDto);
 
-                _unitOfWork.GetRepository<AppUser>().Create(appUsers);
+                _unitOfWork.GetRepository<AppUser>().Create(appUser);
                 await _unitOfWork.SaveChangesAsync();
 
-                return _mapper.Map<AppUserDTO>(appUsers);
+                return _mapper.Map<AppUserDTO>(appUser);
             }
             catch (Exception ex)
             {
@@ -89,12 +89,18 @@ namespace ClickSlotCore.Services.Entity
         {
             try
             {
-                var appUsers = _mapper.Map<AppUser>(appUserDto);
+                var existAppUserDto = await GetByIdAsync(appUserDto.Id);
+                
+                var appUser = _mapper.Map<AppUser>(existAppUserDto);
 
-                _unitOfWork.GetRepository<AppUser>().Update(appUsers);
+                appUser.Name = appUserDto.Name;
+                appUser.Phone = appUserDto.Phone;
+                appUser.Address = appUserDto.Address;
+
+                _unitOfWork.GetRepository<AppUser>().Update(appUser);
                 await _unitOfWork.SaveChangesAsync();
 
-                return _mapper.Map<AppUserDTO>(appUsers);
+                return _mapper.Map<AppUserDTO>(appUser);
             }
             catch (Exception ex)
             {
@@ -109,9 +115,9 @@ namespace ClickSlotCore.Services.Entity
         {
             try
             {
-                var appUsers = _mapper.Map<AppUser>(appUserDto);
+                var appUser = _mapper.Map<AppUser>(appUserDto);
 
-                var deletedAppUsers = _unitOfWork.GetRepository<AppUser>().Delete(appUsers);
+                var deletedAppUsers = _unitOfWork.GetRepository<AppUser>().Delete(appUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 return deletedAppUsers != null;

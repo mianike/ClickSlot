@@ -19,7 +19,7 @@ interface RegisterResponse {
 const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string().required('Phone is required'),
+  phone: yup.string().matches(/^\+?\d{10,14}$/, 'Неверный формат номера телефона').required('Phone is required'),
   address: yup.string(),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   role: yup.number().required('Role is required'),

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using ClickSlotModel.DTOs;
 using ClickSlotCore.Contracts.Interfaces.Entity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Authentication;
 
 namespace ClickSlotCore.Services
 {
@@ -24,7 +26,7 @@ namespace ClickSlotCore.Services
             _jwtTokenService = jwtTokenService;
         }
 
-        public async Task<IdentityResult> RegisterAsync(AppUserDTO appUserDto, string password)
+        public async Task<string> RegisterAsync(AppUserDTO appUserDto, string password)
         {
             var identityUser = new IdentityUser
             {
@@ -36,7 +38,7 @@ namespace ClickSlotCore.Services
             var result = await _userManager.CreateAsync(identityUser, password);
             if (!result.Succeeded)
             {
-                return result;
+                throw new AuthenticationException("Error while creating user");
             }
 
             appUserDto.IdentityUserId = identityUser.Id;
@@ -52,7 +54,9 @@ namespace ClickSlotCore.Services
 
             await _userManager.AddToRoleAsync(identityUser, roleName);
 
-            return IdentityResult.Success;
+            var token = await LoginAsync(appUserDto.Email, password);
+
+            return token;
         }
 
         public async Task<string> LoginAsync(string email, string password)
@@ -60,25 +64,64 @@ namespace ClickSlotCore.Services
             var identityUser = await _userManager.FindByEmailAsync(email);
             if (identityUser == null)
             {
-                throw new UnauthorizedAccessException("Invalid email");
+                throw new AuthenticationException("Invalid email");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(identityUser, password);
             if (!passwordValid)
             {
-                throw new UnauthorizedAccessException("Invalid password.");
+                throw new AuthenticationException("Invalid password.");
             }
 
             var appUser = await _appUserService.GetByIdentityUserIdAsync(identityUser.Id);
             if (appUser == null)
             {
-                throw new UnauthorizedAccessException("User not found.");
+                throw new AuthenticationException("User not found.");
             }
 
             var roles = await _userManager.GetRolesAsync(identityUser);
             var token = _jwtTokenService.GenerateJwtToken(identityUser, roles, appUser.Id);
 
             return token;
+        }
+
+        public async Task<string> UpdateAsync(AppUserDTO appUserDto)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(appUserDto.Email);
+            if (identityUser == null)
+            {
+                throw new AuthenticationException("Invalid email");
+            }
+
+            var updateUser = await _appUserService.UpdateAsync(appUserDto);
+            if (updateUser == null)
+            {
+                throw new DbUpdateException("Error while updation AppUser");
+            }
+
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var token = _jwtTokenService.GenerateJwtToken(identityUser, roles, appUserDto.Id);
+            
+            return token;
+        }
+
+        public async Task<bool> DeleteAsync(int userId)
+        {
+            var appUser = await _appUserService.GetByIdAsync(userId);
+            if (appUser == null)
+            {
+                throw new KeyNotFoundException($"User with id {userId} not found");
+            }
+
+            var identityUser = await _userManager.FindByEmailAsync(appUser.Email);
+            if (identityUser == null)
+            {
+                throw new AuthenticationException("Invalid email");
+            }
+
+            var result = await _userManager.DeleteAsync(identityUser);
+            
+            return result.Succeeded;
         }
     }
 }

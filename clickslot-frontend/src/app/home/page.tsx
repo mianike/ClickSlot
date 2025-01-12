@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
         ) : user ? (
           // Если данные о пользователе получены
           <Link
-            href="/dashboard"
+            href="/auth/account"
             className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
             Личный кабинет
           </Link>

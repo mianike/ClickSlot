@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using ClickSlotCore.Contracts.Interfaces;
 using ClickSlotModel.DTOs;
 using ClickSlotWebAPI.Models.Request;
@@ -30,18 +31,12 @@ namespace ClickSlotWebAPI.Controllers
                 Role = request.Role
             };
 
-            var result = await _userManagementService.RegisterAsync(appUserDto, request.Password);
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
             try
             {
-                var token = await _userManagementService.LoginAsync(request.Email, request.Password);
+                var token = await _userManagementService.RegisterAsync(appUserDto, request.Password);
                 return Ok(new { Token = token });
             }
-            catch (UnauthorizedAccessException ex)
+            catch (AuthenticationException ex)
             {
                 return Unauthorized(ex.Message);
             }
@@ -56,9 +51,63 @@ namespace ClickSlotWebAPI.Controllers
                 var token = await _userManagementService.LoginAsync(request.Email, request.Password);
                 return Ok(new { Token = token });
             }
-            catch (UnauthorizedAccessException ex)
+            catch (AuthenticationException ex)
             {
                 return Unauthorized(ex.Message);
+            }
+        }
+
+        [HttpPut("update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateCurrentUser([FromBody] UpdateAppUserRequest request)
+        {
+            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var appUserDto = new AppUserDTO
+            {
+                Id = currentUser.Id,
+                Email = currentUser.Email,
+
+                Name = request.Name,
+                Phone = request.Phone,
+                Address = request.Address,
+            };
+
+            try
+            {
+                var token = await _userManagementService.UpdateAsync(appUserDto);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = new { message = "Updating error", details = ex.Message }
+                });
+            }
+        }
+
+        [HttpDelete("{userId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            try
+            {
+                var result = await _userManagementService.DeleteAsync(userId);
+                    return result? NoContent(): BadRequest("User not deleted!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = new { message = "Deleting error", details = ex.Message }
+                });
             }
         }
 
