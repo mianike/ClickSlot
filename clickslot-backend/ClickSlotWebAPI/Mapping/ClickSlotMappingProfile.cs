@@ -17,6 +17,7 @@ namespace ClickSlotWebAPI.Mapping
 
             CreateMap<AppUserDTO, AppUserResponse>();
             CreateMap<OfferingDTO, OfferingResponse>();
+            CreateMap<ScheduleDTO, ScheduleResponse>();
         }
     }
 }

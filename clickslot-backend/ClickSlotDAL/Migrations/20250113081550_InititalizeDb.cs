@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClickSlotDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDB : Migration
+    public partial class InititalizeDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -240,7 +240,6 @@ namespace ClickSlotDAL.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MasterId = table.Column<int>(type: "integer", nullable: false),
-                    DayOfWeek = table.Column<int>(type: "integer", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

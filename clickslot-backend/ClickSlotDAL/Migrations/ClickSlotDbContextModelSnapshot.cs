@@ -174,9 +174,6 @@ namespace ClickSlotDAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("integer");
-
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("interval");
 

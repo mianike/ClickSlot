@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClickSlotDAL.Migrations
 {
     [DbContext(typeof(ClickSlotDbContext))]
-    [Migration("20250113000017_InitializeDB")]
-    partial class InitializeDB
+    [Migration("20250113081550_InititalizeDb")]
+    partial class InititalizeDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,9 +176,6 @@ namespace ClickSlotDAL.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("integer");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("interval");

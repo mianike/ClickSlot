@@ -43,22 +43,24 @@ const HomePage: React.FC = () => {
       {/* Контейнер для кнопок с горизонтальным расположением */}
       <div className="flex space-x-4 mb-6"> {/* Добавлен space-x-4 для горизонтального расстояния */}
         {/* Кнопка Список мастеров всегда видна */}
-        <Link
-          href="/masters"
-          className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-          Список мастеров
-        </Link>
+        
 
         {loading ? (
           // Индикатор загрузки
           <p>Загрузка...</p>
         ) : user ? (
-          // Если данные о пользователе получены
+            <div className="flex space-x-6">
+          <Link
+          href="/masters"
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
+          Список мастеров
+        </Link>
           <Link
             href="/auth/account"
             className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
             Личный кабинет
-          </Link>
+            </Link>
+          </div>
         ) : (
           // Если пользователь не авторизован
           <Link

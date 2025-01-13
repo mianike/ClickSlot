@@ -6,7 +6,6 @@ namespace ClickSlotDAL.Entities
     {
         public int MasterId { get; set; }
         public AppUser Master { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public DateOnly Date { get; set; }

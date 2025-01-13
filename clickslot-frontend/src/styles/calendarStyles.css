@@ -1,0 +1,5 @@
+.workday { /* Стили для рабочих дней */
+  background-color: #6dcc554b; /* Цвет фона */
+  color: #5a5a5a; /* Цвет текста */
+  font-weight: bold; /* Жирный шрифт */
+}
