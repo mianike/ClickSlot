@@ -3,17 +3,11 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance'; // Путь к вашему axiosInstance
 
-interface Offering {
-  name: string;
-  price: number;
-  duration: string;
-}
-
 interface Master {
   id: number;
   name: string;
   address: string;
-  offerings: Offering[];
+  offeringsCount: number;
 }
 
 export default function MastersPage() {
@@ -86,7 +80,7 @@ export default function MastersPage() {
               className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
             >
               <h2 className="text-xl font-semibold text-blue-600">{master.name}</h2>
-              <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offerings.length}</h3>
+              <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offeringsCount}</h3>
             </div>
           ))}
         </div>

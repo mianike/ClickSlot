@@ -13,5 +13,6 @@ namespace ClickSlotModel.DTOs
         public DateTime CreatedAt { get; set; }
         public string IdentityUserId { get; set; }
         public ICollection<OfferingDTO> Offerings { get; set; }
+        public IEnumerable<ScheduleDTO> Schedules { get; set; }
     }
 }
