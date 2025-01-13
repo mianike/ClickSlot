@@ -355,12 +355,6 @@ namespace ClickSlotDAL.Migrations
                 column: "MasterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offering_Name",
-                table: "Offering",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_ClientId",
                 table: "Review",
                 column: "ClientId");

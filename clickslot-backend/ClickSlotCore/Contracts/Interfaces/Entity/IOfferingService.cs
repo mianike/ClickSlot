@@ -4,9 +4,10 @@ namespace ClickSlotCore.Contracts.Interfaces.Entity
 {
     public interface IOfferingService : IService
     {
-        Task<IEnumerable<OfferingDTO>> GetOfferingsByMasterIdAsync(int masterId);
-        Task<OfferingDTO> CreateOfferingAsync(OfferingDTO offeringDto);
-        Task<OfferingDTO> UpdateOfferingAsync(OfferingDTO offeringDto);
-        Task<bool> DeleteOfferingAsync(int offeringId);
+        Task<OfferingDTO> GetByIdAsync(int offeringId);
+        Task<IEnumerable<OfferingDTO>> GetAllByMasterIdAsync(int masterId);
+        Task<OfferingDTO> CreateAsync(OfferingDTO offeringDto);
+        Task<OfferingDTO> UpdateAsync(OfferingDTO offeringDto);
+        Task<bool> DeleteAsync(int offeringId);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using ClickSlotDAL.Entities.Base;
-using System.Diagnostics.Metrics;
 
 namespace ClickSlotDAL.Entities
 {

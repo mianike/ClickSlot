@@ -58,10 +58,6 @@ namespace ClickSlotDAL.Contexts
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Offering>()
-                .HasIndex(o => o.Name)
-                .IsUnique();
-
-            modelBuilder.Entity<Offering>()
                 .HasOne(o => o.Master)
                 .WithMany(m=>m.Offerings)
                 .HasForeignKey(o=>o.MasterId)

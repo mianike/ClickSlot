@@ -127,9 +127,6 @@ namespace ClickSlotDAL.Migrations
 
                     b.HasIndex("MasterId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Offering");
                 });
 

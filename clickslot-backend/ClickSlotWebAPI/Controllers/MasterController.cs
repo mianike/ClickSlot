@@ -24,7 +24,7 @@ namespace ClickSlotWebAPI.Controllers
             int page = 1,
             int pageSize = 10)
         {
-            var masterDtos = await _masterService.GetMastersAsync(search, page, pageSize);
+            var masterDtos = await _masterService.GetFiltredAsync(search, page, pageSize);
             var masterResponses = _mapper.Map<List<AppUserResponse>>(masterDtos);
             return Ok(masterResponses);
         }

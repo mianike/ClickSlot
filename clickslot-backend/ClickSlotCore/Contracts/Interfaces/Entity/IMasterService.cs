@@ -4,6 +4,6 @@ namespace ClickSlotCore.Contracts.Interfaces.Entity
 {
     public interface IMasterService : IService
     {
-        Task<IEnumerable<AppUserDTO>> GetMastersAsync(string search, int page, int pageSize);
+        Task<IEnumerable<AppUserDTO>> GetFiltredAsync(string search, int page, int pageSize);
     }
 }

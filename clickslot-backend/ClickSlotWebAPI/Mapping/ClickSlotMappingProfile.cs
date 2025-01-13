@@ -15,8 +15,8 @@ namespace ClickSlotWebAPI.Mapping
             CreateMap<Review, ReviewDTO>().ReverseMap();
             CreateMap<Schedule, ScheduleDTO>().ReverseMap();
 
-            CreateMap<AppUserDTO, AppUserResponse>().ReverseMap();
-            CreateMap<OfferingDTO, OfferingResponse>().ReverseMap();
+            CreateMap<AppUserDTO, AppUserResponse>();
+            CreateMap<OfferingDTO, OfferingResponse>();
         }
     }
 }

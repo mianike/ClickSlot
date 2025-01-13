@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import axiosInstance from "../api/axiosInstance"; // Путь к вашему axiosInstance
+import { useState, useEffect } from 'react';
+import axiosInstance from '../api/axiosInstance'; // Путь к вашему axiosInstance
 
 interface Offering {
   name: string;
@@ -19,7 +19,7 @@ interface Master {
 export default function MastersPage() {
   const [masters, setMasters] = useState<Master[]>([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // фиксируем размер страницы
 
@@ -38,7 +38,7 @@ export default function MastersPage() {
       // Приводим тип ответа к Master[]
       setMasters(response.data as Master[]);
     } catch (error) {
-      console.error("Failed to fetch masters", error);
+      console.error('Failed to fetch masters', error);
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ export default function MastersPage() {
 
   useEffect(() => {
     // Загрузка всех мастеров при первом рендере
-    fetchMasters("", page);
+    fetchMasters('', page);
   }, [page]);
 
   const handleSearch = () => {
@@ -79,22 +79,14 @@ export default function MastersPage() {
       ) : masters.length === 0 ? (
         <p>Мастера не найдены</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {masters.map((master) => (
             <div
               key={master.id}
-              className="border border-gray-300 rounded p-4 shadow"
+              className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
             >
-              <h2 className="text-xl font-semibold">{master.name}</h2>
-              <p className="text-gray-500">{master.address}</p>
-              <h3 className="mt-2 font-bold">Услуги:</h3>
-              <ul className="list-disc pl-6">
-                {master.offerings.map((offering, index) => (
-                  <li key={index}>
-                    {offering.name} - {offering.price}₽ ({offering.duration})
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-xl font-semibold text-blue-600">{master.name}</h2>
+              <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offerings.length}</h3>
             </div>
           ))}
         </div>

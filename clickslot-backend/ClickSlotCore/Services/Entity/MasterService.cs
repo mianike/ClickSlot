@@ -19,7 +19,7 @@ namespace ClickSlotCore.Services.Entity
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AppUserDTO>> GetMastersAsync(string search, int page, int pageSize)
+        public async Task<IEnumerable<AppUserDTO>> GetFiltredAsync(string search, int page, int pageSize)
         {
             try
             {

@@ -1,8 +1,10 @@
 ﻿using System.Security.Authentication;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ClickSlotCore.Contracts.Interfaces;
 using ClickSlotModel.DTOs;
 using ClickSlotWebAPI.Models.Request;
+using ClickSlotWebAPI.Models.Response;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ClickSlotWebAPI.Controllers
@@ -12,10 +14,12 @@ namespace ClickSlotWebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserManagementService _userManagementService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IUserManagementService userManagementService)
+        public AuthController(IUserManagementService userManagementService, IMapper mapper)
         {
             _userManagementService = userManagementService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -120,7 +124,8 @@ namespace ClickSlotWebAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(currentUser);
+
+            return Ok(_mapper.Map<AppUserResponse>(currentUser));
         }
     }
 }

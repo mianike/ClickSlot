@@ -18,7 +18,22 @@ namespace ClickSlotCore.Services.Entity
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<OfferingDTO>> GetOfferingsByMasterIdAsync(int masterId)
+        public async Task<OfferingDTO> GetByIdAsync(int offeringId)
+        {
+            var repository = _unitOfWork.GetRepository<Offering>();
+
+            var offering = await repository
+                .AsReadOnlyQueryable()
+                .FirstOrDefaultAsync(o => o.Id == offeringId);
+
+            if (offering == null)
+            {
+                throw new KeyNotFoundException($"Offering with id {offeringId} not found");
+            }
+
+            return _mapper.Map<OfferingDTO>(offering);
+        }
+        public async Task<IEnumerable<OfferingDTO>> GetAllByMasterIdAsync(int masterId)
         {
             var repository = _unitOfWork.GetRepository<Offering>();
 
@@ -30,7 +45,7 @@ namespace ClickSlotCore.Services.Entity
             return _mapper.Map<IEnumerable<OfferingDTO>>(offering);
         }
 
-        public async Task<OfferingDTO> CreateOfferingAsync(OfferingDTO offeringDto)
+        public async Task<OfferingDTO> CreateAsync(OfferingDTO offeringDto)
         {
             var offering = _mapper.Map<Offering>(offeringDto);
 
@@ -40,7 +55,7 @@ namespace ClickSlotCore.Services.Entity
             return _mapper.Map<OfferingDTO>(offering);
         }
 
-        public async Task<OfferingDTO> UpdateOfferingAsync(OfferingDTO offeringDto)
+        public async Task<OfferingDTO> UpdateAsync(OfferingDTO offeringDto)
         {
             var offering = _mapper.Map<Offering>(offeringDto);
 
@@ -50,9 +65,11 @@ namespace ClickSlotCore.Services.Entity
             return _mapper.Map<OfferingDTO>(offering);
         }
 
-        public async Task<bool> DeleteOfferingAsync(int offeringId)
+        public async Task<bool> DeleteAsync(int offeringId)
         {
-            var offering = _mapper.Map<Offering>(offeringId);
+            var offeringDto = await GetByIdAsync(offeringId);
+
+            var offering = _mapper.Map<Offering>(offeringDto);
 
             var deletedOffering = _unitOfWork.GetRepository<Offering>().Delete(offering);
             await _unitOfWork.SaveChangesAsync();

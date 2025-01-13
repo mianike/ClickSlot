@@ -192,7 +192,7 @@ const AccountPage: React.FC = () => {
                 </button>
             <button
               type="button"
-              className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
+              className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
               onClick={() => {
                 // Логика выхода
                 localStorage.removeItem('token');
@@ -209,7 +209,7 @@ const AccountPage: React.FC = () => {
               <Link href="/schedule" className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
                 Моё расписание
               </Link>
-              <Link href="/offerings" className="px-6 py-3 bg-orange-500 text-white rounded-lg shadow hover:bg-orange-600 transition">
+              <Link href="/offerings" className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
                 Мои услуги
               </Link>
             </div>

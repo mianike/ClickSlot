@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Вход</h1>
+      <h1 className="text-3xl font-bold text-gray-800">Вход</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md space-y-4">
         {/* Общая ошибка */}
         {serverMessage && (

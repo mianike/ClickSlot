@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClickSlotDAL.Migrations
 {
     [DbContext(typeof(ClickSlotDbContext))]
-    [Migration("20250111012001_InitializeDB")]
+    [Migration("20250113000017_InitializeDB")]
     partial class InitializeDB
     {
         /// <inheritdoc />
@@ -129,9 +129,6 @@ namespace ClickSlotDAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MasterId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Offering");
                 });
