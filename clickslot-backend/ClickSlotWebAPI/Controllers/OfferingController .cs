@@ -65,7 +65,7 @@ namespace ClickSlotWebAPI.Controllers
 
             var createdOffering = await _offeringService.CreateAsync(offeringDto);
 
-            return CreatedAtAction(nameof(GetOfferingsByMasterId), new { masterId = createdOffering.MasterId }, createdOffering);
+            return CreatedAtAction(nameof(GetOfferingById), new { offeringId = createdOffering.Id}, _mapper.Map<OfferingResponse>(createdOffering));
         }
 
         [HttpPut("{offeringId}")]
@@ -106,23 +106,11 @@ namespace ClickSlotWebAPI.Controllers
         [HttpDelete("{offeringId}")]
         public async Task<IActionResult> DeleteOffering(int offeringId)
         {
-            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
-
-            if (currentUser == null)
-            {
-                return Unauthorized("User is not authorized or not found.");
-            }
-
-            if (currentUser.Role != AppUserRole.Master)
-            {
-                return Forbid("Only masters can delete offerings.");
-            }
-
             var result = await _offeringService.DeleteAsync(offeringId);
 
             if (!result)
             {
-                return NotFound("Offering not found or you are not authorized to delete it.");
+                return NotFound("Offering not found.");
             }
 
             return NoContent();

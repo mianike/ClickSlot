@@ -21,13 +21,13 @@ namespace ClickSlotDAL.Contexts
                 .HasOne(b => b.Client)
                 .WithMany(c => c.ClientBookings)
                 .HasForeignKey(b => b.ClientId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Master)
                 .WithMany(m => m.MasterBookings)
                 .HasForeignKey(b => b.MasterId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Offering)
@@ -38,13 +38,13 @@ namespace ClickSlotDAL.Contexts
                 .HasOne(r => r.Client)
                 .WithMany(c => c.ClientReviews)
                 .HasForeignKey(r => r.ClientId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Master)
                 .WithMany(m => m.MasterReviews)
                 .HasForeignKey(r => r.MasterId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Schedule>()
                 .HasOne(s => s.Master)
@@ -59,9 +59,9 @@ namespace ClickSlotDAL.Contexts
 
             modelBuilder.Entity<Offering>()
                 .HasOne(o => o.Master)
-                .WithMany(m=>m.Offerings)
-                .HasForeignKey(o=>o.MasterId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(m => m.Offerings)
+                .HasForeignKey(o => o.MasterId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Booking>()
                 .Property(b => b.Status)
@@ -70,6 +70,14 @@ namespace ClickSlotDAL.Contexts
             modelBuilder.Entity<Schedule>()
                 .Property(s => s.Date)
                 .HasConversion(new DateOnlyConverter());
+
+            modelBuilder.Entity<Booking>()
+                .Property(s => s.StartTime)
+                .HasConversion(new DateTimeUtcConverter());
+
+            modelBuilder.Entity<Booking>()
+                .Property(s => s.EndTime)
+                .HasConversion(new DateTimeUtcConverter());
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }

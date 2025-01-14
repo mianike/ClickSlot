@@ -15,7 +15,7 @@ namespace ClickSlotWebAPI.Models.Request
 
         [Required]
         [DataType(DataType.Date)]
-        [TomorrowDate(ErrorMessage = "Дата должна быть не раньше, чем завтрашний день")]
+        [AtLeastTomorrowDate(ErrorMessage = "Дата должна быть не раньше, чем завтрашний день")]
         public DateOnly Date { get; set; }
     }
 }

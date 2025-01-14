@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClickSlotDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InititalizeDb : Migration
+    public partial class initializeDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -201,7 +201,7 @@ namespace ClickSlotDAL.Migrations
                         column: x => x.MasterId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,13 +224,13 @@ namespace ClickSlotDAL.Migrations
                         column: x => x.ClientId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Review_AppUser_MasterId",
                         column: x => x.MasterId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,13 +276,13 @@ namespace ClickSlotDAL.Migrations
                         column: x => x.ClientId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Booking_AppUser_MasterId",
                         column: x => x.MasterId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Booking_Offering_OfferingId",
                         column: x => x.OfferingId,

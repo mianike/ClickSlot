@@ -402,13 +402,13 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Client")
                         .WithMany("ClientBookings")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("MasterBookings")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.Offering", "Offering")
@@ -429,7 +429,7 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("Offerings")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Master");
@@ -440,13 +440,13 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Client")
                         .WithMany("ClientReviews")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("MasterReviews")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");

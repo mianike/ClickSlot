@@ -2,7 +2,7 @@
 
 namespace ClickSlotWebAPI.Validation
 {
-    public class TomorrowDateAttribute : ValidationAttribute
+    public class AtLeastTomorrowDateAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {

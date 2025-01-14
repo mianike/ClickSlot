@@ -22,6 +22,19 @@ namespace ClickSlotWebAPI.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetCurrentUser()
+        {
+            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<AppUserResponse>(currentUser));
+        }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -113,19 +126,6 @@ namespace ClickSlotWebAPI.Controllers
                     error = new { message = "Deleting error", details = ex.Message }
                 });
             }
-        }
-
-        [HttpGet("me")]
-        [Authorize]
-        public IActionResult GetCurrentUser()
-        {
-            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
-            if (currentUser == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<AppUserResponse>(currentUser));
         }
     }
 }

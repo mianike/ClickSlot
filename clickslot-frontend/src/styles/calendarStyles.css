@@ -3,3 +3,9 @@
   color: #5a5a5a; /* Цвет текста */
   font-weight: bold; /* Жирный шрифт */
 }
+
+.selected-date {
+  background-color: #3267fac5;
+  color: white;
+  font-weight: bold;
+}

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../api/axiosInstance';
 import Link from 'next/link';
+import { useRouter} from 'next/navigation';
 
 interface Offering {
   id: number;
@@ -21,7 +22,8 @@ const OfferingsPage: React.FC = () => {
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<{ id: number } | null>(null);
+  const [user, setUser] = useState<{ id: number } | null>(null)
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -68,6 +70,10 @@ const OfferingsPage: React.FC = () => {
     }
   };
 
+  const handleOfferingEdit = (offeringId: number) => {
+    router.push(`/offerings/edit/${offeringId}`);
+  };
+
   if (loading) return <p>Загрузка...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -87,8 +93,20 @@ const OfferingsPage: React.FC = () => {
             <p className="text-gray-500 mb-2">Цена: {offering.price} руб</p>
             <p className="text-gray-500 mb-4">Длительность: {offering.duration} мин</p>
             <div className="flex justify-between items-center">
-              <Link href={`/offerings/edit/${offering.id}`} className="text-blue-500 hover:underline">Редактировать</Link>
-              <button onClick={() => handleDelete(offering.id)} className="text-red-500 hover:underline">Удалить</button>
+              <button
+                    type="button"
+                    className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+                    onClick={() => handleOfferingEdit(offering.id)} // Добавляем обработчик на кнопку редактирования
+                >
+                    Редактировать
+              </button>
+              <button
+                    type="button"
+                    className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
+                    onClick={() => handleDelete(offering.id)} // Добавляем обработчик на кнопку удаления
+                >
+                    Удалить
+                </button>
             </div>
           </div>
         ))}

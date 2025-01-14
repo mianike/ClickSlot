@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClickSlotDAL.Migrations
 {
     [DbContext(typeof(ClickSlotDbContext))]
-    [Migration("20250113081550_InititalizeDb")]
-    partial class InititalizeDb
+    [Migration("20250113234612_initializeDB")]
+    partial class initializeDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -405,13 +405,13 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Client")
                         .WithMany("ClientBookings")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("MasterBookings")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.Offering", "Offering")
@@ -432,7 +432,7 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("Offerings")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Master");
@@ -443,13 +443,13 @@ namespace ClickSlotDAL.Migrations
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Client")
                         .WithMany("ClientReviews")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClickSlotDAL.Entities.AppUser", "Master")
                         .WithMany("MasterReviews")
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");

@@ -11,6 +11,7 @@ namespace ClickSlotWebAPI.Controllers
 {
     [ApiController]
     [Route("api/schedules")]
+    [Authorize(Roles = "Master")]
     public class ScheduleController : ControllerBase
     {
         private readonly IScheduleService _scheduleService;
@@ -44,7 +45,6 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Master")]
         public async Task<IActionResult> CreateSchedule([FromBody] ScheduleRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -73,7 +73,6 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPut("{scheduleId}")]
-        [Authorize(Roles = "Master")]
         public async Task<IActionResult> UpdateSchedule(int scheduleId, [FromBody] ScheduleRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -108,26 +107,13 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpDelete("{scheduleId}")]
-        [Authorize(Roles = "Master")]
         public async Task<IActionResult> DeleteSchedule(int scheduleId)
         {
-            var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
-
-            if (currentUser == null)
-            {
-                return Unauthorized("User is not authorized or not found.");
-            }
-
-            if (currentUser.Role != AppUserRole.Master)
-            {
-                return Forbid("Only masters can delete schedules.");
-            }
-
             var result = await _scheduleService.DeleteAsync(scheduleId);
 
             if (!result)
             {
-                return NotFound("Schedule not found or you are not authorized to delete it.");
+                return NotFound("Schedule not found.");
             }
 
             return NoContent();

@@ -18,17 +18,17 @@ namespace ClickSlotCore.Services.Entity
             _mapper = mapper;
         }
 
-        public async Task<ScheduleDTO> GetByIdAsync(int scheduleId)
+        public async Task<ScheduleDTO> GetByIdAsync(int id)
         {
             var repository = _unitOfWork.GetRepository<Schedule>();
 
             var schedule = await repository
                 .AsReadOnlyQueryable()
-                .FirstOrDefaultAsync(o => o.Id == scheduleId);
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (schedule == null)
             {
-                throw new KeyNotFoundException($"Schedule with id {scheduleId} not found");
+                throw new KeyNotFoundException($"Schedule with id {id} not found");
             }
 
             return _mapper.Map<ScheduleDTO>(schedule);
@@ -65,9 +65,9 @@ namespace ClickSlotCore.Services.Entity
             return _mapper.Map<ScheduleDTO>(schedule);
         }
 
-        public async Task<bool> DeleteAsync(int scheduleId)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var scheduleDto = await GetByIdAsync(scheduleId);
+            var scheduleDto = await GetByIdAsync(id);
 
             var schedule = _mapper.Map<Schedule>(scheduleDto);
 
@@ -75,6 +75,17 @@ namespace ClickSlotCore.Services.Entity
             await _unitOfWork.SaveChangesAsync();
 
             return deletedSchedule != null;
+        }
+
+        public async Task<ScheduleDTO> GetMasterWorkingDay(int masterId, DateTime dateTime)
+        {
+            var repository = _unitOfWork.GetRepository<Schedule>();
+
+            var schedule = await repository
+                .AsReadOnlyQueryable()
+                .FirstOrDefaultAsync(s => s.MasterId == masterId && s.Date == DateOnly.FromDateTime(dateTime));
+
+            return _mapper.Map<ScheduleDTO>(schedule);
         }
     }
 

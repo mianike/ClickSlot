@@ -10,11 +10,15 @@ namespace ClickSlotCore.Services.Entity
 {
     public class MasterService : IMasterService
     {
+        private readonly IOfferingService _offeringService;
+        private readonly IScheduleService _scheduleService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public MasterService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MasterService(IOfferingService offeringService, IScheduleService scheduleService, IUnitOfWork unitOfWork, IMapper mapper)
         {
+            _offeringService = offeringService;
+            _scheduleService = scheduleService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -25,7 +29,8 @@ namespace ClickSlotCore.Services.Entity
             {
                 var repository = _unitOfWork.GetRepository<AppUser>();
 
-                IQueryable<AppUser> query = repository.AsReadOnlyQueryable()
+                IQueryable<AppUser> query = repository
+                    .AsReadOnlyQueryable()
                     .Where(u => u.Role == AppUserRole.Master && u.Offerings.Any())
                     .Include(u => u.Offerings);
 
@@ -47,6 +52,77 @@ namespace ClickSlotCore.Services.Entity
             {
                 throw new ApplicationException($"Error occurred while retrieving masters: {ex.Message}", ex);
             }
+        }
+
+        public async Task<AppUserDTO> GetMasterByIdAsync(int id)
+        {
+            try
+            {
+                var repository = _unitOfWork.GetRepository<AppUser>();
+
+                var appUser = await repository
+                    .AsReadOnlyQueryable()
+                    .Include(u => u.Offerings)
+                    .Include(u => u.Schedules)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+                if (appUser == null || appUser.Role != AppUserRole.Master)
+                {
+                    throw new KeyNotFoundException($"Master with id {id} not found");
+                }
+
+                return _mapper.Map<AppUserDTO>(appUser);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error occurred while retrieving master: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<IEnumerable<DateTime>> GetSlotsAsync(int masterId, int offeringId, DateTime date)
+        {
+            var offering = await _offeringService.GetByIdAsync(offeringId);
+            if (offering == null)
+            {
+                throw new ArgumentException($"Offering by id {offeringId} not found");
+            }
+
+            var repository = _unitOfWork.GetRepository<Booking>();
+
+            //при сравнении дат костыль, т.к. скорее всего из-за конвертёра они при обычном Equals отличаются)
+            var existingBookings = await repository
+                .AsReadOnlyQueryable()
+                .Where(b => b.MasterId == masterId
+                            && DateOnly.FromDateTime(b.StartTime.Date) == DateOnly.FromDateTime(date.Date))
+                .OrderBy(b => b.StartTime)
+                .ToListAsync();
+
+            var workingDay = await _scheduleService.GetMasterWorkingDay(masterId, date);
+
+            if (workingDay == null)
+            {
+                return Enumerable.Empty<DateTime>();
+            }
+
+            var availableSlots = new List<DateTime>();
+            var slotDuration = offering.Duration;
+
+            var startTime = new DateTime(DateOnly.FromDateTime(date), TimeOnly.FromTimeSpan(workingDay.StartTime));
+            var endTime = new DateTime(DateOnly.FromDateTime(date), TimeOnly.FromTimeSpan(workingDay.EndTime));
+
+            while (startTime.Add(slotDuration) <= endTime)
+            {
+                if (!existingBookings.Any(b =>
+                        b.StartTime.ToUniversalTime() < startTime.ToUniversalTime().Add(slotDuration) && b.EndTime.ToUniversalTime() > startTime.ToUniversalTime()))
+                {
+                    availableSlots.Add(startTime);
+                }
+
+                // Шаг между слотами
+                startTime = startTime.AddMinutes(15);
+            }
+
+            return availableSlots;
         }
     }
 }

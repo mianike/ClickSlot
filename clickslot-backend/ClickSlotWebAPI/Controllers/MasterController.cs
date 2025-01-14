@@ -38,5 +38,33 @@ namespace ClickSlotWebAPI.Controllers
             }
             return Ok(masterResponses);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMasterById(int id)
+        {
+            var masterDto = await _masterService.GetMasterByIdAsync(id);
+            if (masterDto == null)
+            {
+                return NotFound("Мастер не найден");
+            }
+
+            var masterResponse = _mapper.Map<SingleMasterResponse>(masterDto);
+
+            return Ok(masterResponse);
+        }
+
+        [HttpGet("{masterId}/offerings/{offeringId}/slots")]
+        public async Task<IActionResult> GetSlots(int masterId, int offeringId, DateTime date)
+        {
+            try
+            {
+                var slots = await _masterService.GetSlotsAsync(masterId, offeringId, date);
+                return Ok(slots);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

@@ -18,21 +18,22 @@ namespace ClickSlotCore.Services.Entity
             _mapper = mapper;
         }
 
-        public async Task<OfferingDTO> GetByIdAsync(int offeringId)
+        public async Task<OfferingDTO> GetByIdAsync(int id)
         {
             var repository = _unitOfWork.GetRepository<Offering>();
 
             var offering = await repository
                 .AsReadOnlyQueryable()
-                .FirstOrDefaultAsync(o => o.Id == offeringId);
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (offering == null)
             {
-                throw new KeyNotFoundException($"Offering with id {offeringId} not found");
+                throw new KeyNotFoundException($"Offering with id {id} not found");
             }
 
             return _mapper.Map<OfferingDTO>(offering);
         }
+
         public async Task<IEnumerable<OfferingDTO>> GetAllByMasterIdAsync(int masterId)
         {
             var repository = _unitOfWork.GetRepository<Offering>();
@@ -65,9 +66,9 @@ namespace ClickSlotCore.Services.Entity
             return _mapper.Map<OfferingDTO>(offering);
         }
 
-        public async Task<bool> DeleteAsync(int offeringId)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var offeringDto = await GetByIdAsync(offeringId);
+            var offeringDto = await GetByIdAsync(id);
 
             var offering = _mapper.Map<Offering>(offeringDto);
 

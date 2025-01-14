@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosInstance'; // Путь к вашему axiosInstance
+import Link from 'next/link';
+import { useRouter} from 'next/navigation';
 
 interface Master {
   id: number;
@@ -16,6 +18,7 @@ export default function MastersPage() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // фиксируем размер страницы
+  const router = useRouter();
 
   const fetchMasters = async (searchQuery: string, pageNumber: number) => {
     setLoading(true);
@@ -46,6 +49,10 @@ export default function MastersPage() {
   const handleSearch = () => {
     setPage(1); // При новом поиске сбрасываем страницу на первую
     fetchMasters(search, 1);
+  };
+
+  const handleMasterOfferings = (masterId: number) => {
+    router.push(`/masters/${masterId}`);
   };
 
   return (
@@ -79,8 +86,14 @@ export default function MastersPage() {
               key={master.id}
               className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
             >
-              <h2 className="text-xl font-semibold text-blue-600">{master.name}</h2>
+              <h2 className="text-xl font-semibold text-gray-800">{master.name}</h2>
               <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offeringsCount}</h3>
+              <button
+                onClick={() => handleMasterOfferings(master.id)} // Переход на страницу записи
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Выбрать
+              </button>
             </div>
           ))}
         </div>
