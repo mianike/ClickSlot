@@ -11,7 +11,7 @@ namespace ClickSlotWebAPI.Controllers
 {
     [ApiController]
     [Route("api/schedules")]
-    [Authorize(Roles = "Master")]
+    [Authorize]
     public class ScheduleController : ControllerBase
     {
         private readonly IScheduleService _scheduleService;
@@ -45,6 +45,7 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> CreateSchedule([FromBody] ScheduleRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -73,6 +74,7 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPut("{scheduleId}")]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> UpdateSchedule(int scheduleId, [FromBody] ScheduleRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -107,13 +109,29 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpDelete("{scheduleId}")]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> DeleteSchedule(int scheduleId)
         {
-            var result = await _scheduleService.DeleteAsync(scheduleId);
-
-            if (!result)
+            try
             {
-                return NotFound("Schedule not found.");
+                var result = await _scheduleService.DeleteAsync(scheduleId);
+
+                if (!result)
+                {
+                    return NotFound("Schedule not found.");
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Forbid(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = new { message = "Deleting error", details = ex.Message }
+                });
             }
 
             return NoContent();

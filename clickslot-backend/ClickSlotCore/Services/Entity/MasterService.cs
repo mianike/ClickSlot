@@ -32,7 +32,8 @@ namespace ClickSlotCore.Services.Entity
                 IQueryable<AppUser> query = repository
                     .AsReadOnlyQueryable()
                     .Where(u => u.Role == AppUserRole.Master && u.Offerings.Any())
-                    .Include(u => u.Offerings);
+                    .Include(o => o.Offerings)
+                    .Include(r => r.MasterReviews);
 
                 if (!string.IsNullOrWhiteSpace(search))
                 {
@@ -62,8 +63,11 @@ namespace ClickSlotCore.Services.Entity
 
                 var appUser = await repository
                     .AsReadOnlyQueryable()
-                    .Include(u => u.Offerings)
-                    .Include(u => u.Schedules)
+                    .Include(o => o.Offerings)
+                    .Include(s => s.Schedules)
+                    .Include(r=>r.MasterReviews
+                        .OrderByDescending(b => b.CreatedAt))
+                    .ThenInclude(mr=>mr.Client)
                     .FirstOrDefaultAsync(u => u.Id == id);
 
                 if (appUser == null || appUser.Role != AppUserRole.Master)

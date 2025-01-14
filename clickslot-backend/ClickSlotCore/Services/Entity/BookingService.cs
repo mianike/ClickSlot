@@ -24,6 +24,8 @@ namespace ClickSlotCore.Services.Entity
 
             var booking = await repository
                 .AsReadOnlyQueryable()
+                .Include(c => c.Client)
+                .Include(o => o.Offering)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (booking == null)
@@ -38,12 +40,34 @@ namespace ClickSlotCore.Services.Entity
         {
             var repository = _unitOfWork.GetRepository<Booking>();
 
-            var booking = await repository
+            var bookings = await repository
                 .AsReadOnlyQueryable()
-                .Where(o => o.MasterId == masterId)
+                .Where(b => b.MasterId == masterId
+                            && b.StartTime.ToLocalTime() >= DateTime.Now)
+                .Include(c => c.Client)
+                .Include(o => o.Offering)
+                .OrderBy(b => b.StartTime)
                 .ToListAsync();
 
-            return _mapper.Map<IEnumerable<BookingDTO>>(booking);
+            return _mapper.Map<IEnumerable<BookingDTO>>(bookings);
+        }
+
+        public async Task<IEnumerable<BookingDTO>> GetAllByMasterIdAsync(int masterId, int page, int pageSize)
+        {
+            var repository = _unitOfWork.GetRepository<Booking>();
+
+            var bookings = await repository
+                .AsReadOnlyQueryable()
+                .Where(b => b.MasterId == masterId
+                            && b.StartTime.ToLocalTime() >= DateTime.Now)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(c => c.Client)
+                .Include(o => o.Offering)
+                .OrderBy(b => b.StartTime)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<BookingDTO>>(bookings);
         }
 
         public async Task<BookingDTO> CreateAsync(BookingDTO bookingDto)

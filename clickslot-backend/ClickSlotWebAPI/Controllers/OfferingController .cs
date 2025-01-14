@@ -12,7 +12,7 @@ namespace ClickSlotWebAPI.Controllers
 {
     [ApiController]
     [Route("api/offerings")]
-    [Authorize(Roles = "Master")]
+    [Authorize]
     public class OfferingController : ControllerBase
     {
         private readonly IOfferingService _offeringService;
@@ -41,6 +41,7 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> CreateOffering([FromBody] OfferingRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -69,6 +70,7 @@ namespace ClickSlotWebAPI.Controllers
         }
 
         [HttpPut("{offeringId}")]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> UpdateOffering(int offeringId, [FromBody] OfferingRequest request)
         {
             var currentUser = HttpContext.Items["CurrentUser"] as AppUserDTO;
@@ -104,6 +106,7 @@ namespace ClickSlotWebAPI.Controllers
 
 
         [HttpDelete("{offeringId}")]
+        [Authorize(Roles = "Master")]
         public async Task<IActionResult> DeleteOffering(int offeringId)
         {
             var result = await _offeringService.DeleteAsync(offeringId);

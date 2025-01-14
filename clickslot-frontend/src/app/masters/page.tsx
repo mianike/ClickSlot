@@ -8,7 +8,8 @@ import { useRouter} from 'next/navigation';
 interface Master {
   id: number;
   name: string;
-  address: string;
+  rating: number;
+  reviewsCount:number;
   offeringsCount: number;
 }
 
@@ -16,7 +17,7 @@ export default function MastersPage() {
   const [masters, setMasters] = useState<Master[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10); // фиксируем размер страницы
   const router = useRouter();
 
@@ -43,11 +44,11 @@ export default function MastersPage() {
 
   useEffect(() => {
     // Загрузка всех мастеров при первом рендере
-    fetchMasters('', page);
-  }, [page]);
+    fetchMasters('', currentPage);
+  }, [currentPage]);
 
   const handleSearch = () => {
-    setPage(1); // При новом поиске сбрасываем страницу на первую
+    setCurrentPage(1); // При новом поиске сбрасываем страницу на первую
     fetchMasters(search, 1);
   };
 
@@ -56,7 +57,7 @@ export default function MastersPage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4 sm:px-6 lg:px-10 mt-4 mb-4"> {/* Добавлены отступы с боков */}
       <h1 className="text-2xl font-bold mb-4">Мастера</h1>
 
       <div className="mb-4 flex gap-4">
@@ -84,10 +85,11 @@ export default function MastersPage() {
           {masters.map((master) => (
             <div
               key={master.id}
-              className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
+              className="bg-white border border-gray-300 rounded-lg shadow-md p-4 w-full"
             >
               <h2 className="text-xl font-semibold text-gray-800">{master.name}</h2>
               <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offeringsCount}</h3>
+              <h3 className="mt-4 font-semibold text-wrap text-gray-600">Рейтинг: {master.rating} (Отз: {master.reviewsCount})</h3>
               <button
                 onClick={() => handleMasterOfferings(master.id)} // Переход на страницу записи
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
@@ -99,22 +101,29 @@ export default function MastersPage() {
         </div>
       )}
 
-      <div className="flex justify-between items-center mt-4">
+      {/* Пагинация */}
+      <div className="flex flex-col items-center p-20 min-h-screen bg-gray-100">{/* Пагинация */}
+      <div className="flex gap-4 mt-8">
         <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1 || loading}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50"
+          disabled={currentPage === 1 || loading}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className={`px-4 py-2 rounded ${
+            currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
         >
-          Назад
+          Предыдущая
         </button>
-        <span>Страница: {page}</span>
+        <span className="mt-2">Страница: {currentPage}</span>
         <button
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={masters.length < pageSize || loading}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50"
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          className={`px-4 py-2 rounded ${
+            masters.length === pageSize ? "bg-blue-500 text-white hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={masters.length < pageSize || loading}
         >
-          Вперёд
+          Следующая
         </button>
+      </div>
       </div>
     </div>
   );

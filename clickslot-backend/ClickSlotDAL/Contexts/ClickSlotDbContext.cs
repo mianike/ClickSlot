@@ -63,10 +63,6 @@ namespace ClickSlotDAL.Contexts
                 .HasForeignKey(o => o.MasterId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Booking>()
-                .Property(b => b.Status)
-                .HasDefaultValue(BookingStatus.Pending);
-
             modelBuilder.Entity<Schedule>()
                 .Property(s => s.Date)
                 .HasConversion(new DateOnlyConverter());

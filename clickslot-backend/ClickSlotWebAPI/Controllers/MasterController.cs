@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ClickSlotCore.Contracts.Interfaces.Entity;
+using ClickSlotDAL.Entities;
+using ClickSlotModel.DTOs;
 using ClickSlotWebAPI.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,18 +27,8 @@ namespace ClickSlotWebAPI.Controllers
             int pageSize = 10)
         {
             var masterDtos = await _masterService.GetFiltredAsync(search, page, pageSize);
-            var masterResponses = new List<MasterResponse>();
-            foreach (var master in masterDtos)
-            {
-                masterResponses.Add(new MasterResponse
-                {
-                    Id = master.Id,
-                    Name = master.Name,
-                    Email = master.Email,
-                    OfferingsCount = master.Offerings.Count
-                });
-            }
-            return Ok(masterResponses);
+            
+            return Ok(_mapper.Map<IEnumerable<MasterResponse>>(masterDtos));
         }
 
         [HttpGet("{id}")]

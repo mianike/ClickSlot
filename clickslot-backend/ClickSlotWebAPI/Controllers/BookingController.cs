@@ -22,11 +22,14 @@ namespace ClickSlotWebAPI.Controllers
             _bookingService = bookingService;
             _mapper = mapper;
         }
-
+        
         [HttpGet("master/{masterId}")]
-        public async Task<IActionResult> GetBookingsByMasterId(int masterId)
+        public async Task<IActionResult> GetBookingsByMasterId(
+            int masterId,
+            int page = 1,
+            int pageSize = 10)
         {
-            var bookings = await _bookingService.GetAllByMasterIdAsync(masterId);
+            var bookings = await _bookingService.GetAllByMasterIdAsync(masterId, page, pageSize);
 
             return Ok(_mapper.Map<IEnumerable<BookingResponse>>(bookings));
         }
@@ -55,8 +58,7 @@ namespace ClickSlotWebAPI.Controllers
                 MasterId = request.MasterId,
                 OfferingId = request.OfferingId,
                 StartTime = request.StartTime,
-                EndTime = request.EndTime,
-                Status = BookingStatus.Pending
+                EndTime = request.EndTime
             };
 
             var createdBooking = await _bookingService.CreateAsync(bookingDto);
@@ -81,8 +83,7 @@ namespace ClickSlotWebAPI.Controllers
                 MasterId = request.MasterId,
                 OfferingId = request.OfferingId,
                 StartTime = request.StartTime,
-                EndTime = request.EndTime,
-                Status = request.Status
+                EndTime = request.EndTime
             };
 
             var updatedBooking = await _bookingService.UpdateAsync(bookingDto);

@@ -84,7 +84,7 @@ const EditOfferingPage: React.FC = () => {
       <h1 className="text-3xl font-semibold text-center mb-6">Редактировать услугу</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Имя услуги</label>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Услуга</label>
           <input
             id="name"
             type="text"
@@ -110,7 +110,7 @@ const EditOfferingPage: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Длительность (мин)</label>
+          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Продолжительность (мин)</label>
           <input
             id="duration"
             type="number"

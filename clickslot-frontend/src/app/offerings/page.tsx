@@ -64,7 +64,7 @@ const OfferingsPage: React.FC = () => {
   const handleDelete = async (offeringId: number) => {
     try {
       await axiosInstance.delete(`/offerings/${offeringId}`);
-      setOfferings(offerings.filter(offering => offering.id !== offeringId)); // Удаляем услугу из списка
+      setOfferings(offerings.filter(offering => offering.id !== offeringId));
     } catch (err) {
       setError('Ошибка при удалении услуги.');
     }
@@ -78,8 +78,8 @@ const OfferingsPage: React.FC = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 mt-4 mb-4"> {/* Добавлены отступы с боков */}
-      <div className="flex justify-between items-center mb-6"> {/* Центрируем заголовок и кнопку по горизонтали */}
+    <div className="px-4 sm:px-6 lg:px-8 mt-4 mb-4">
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Мои услуги</h1>
         <Link href="/offerings/new" className="bg-green-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-green-600 transition">
           Добавить услугу
@@ -90,8 +90,8 @@ const OfferingsPage: React.FC = () => {
         {offerings.map(offering => (
           <div key={offering.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col">
             <h2 className="text-xl font-semibold mb-2">{offering.name}</h2>
-            <p className="text-gray-500 mb-2">Цена: {offering.price} руб</p>
-            <p className="text-gray-500 mb-4">Длительность: {offering.duration} мин</p>
+            <p className="text-gray-500 mb-2">Стоимость: {offering.price} руб.</p>
+            <p className="text-gray-500 mb-4">Продолжительность: {offering.duration}</p>
             <div className="flex justify-between items-center">
               <button
                     type="button"

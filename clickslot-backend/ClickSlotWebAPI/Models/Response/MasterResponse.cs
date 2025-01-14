@@ -6,7 +6,8 @@ namespace ClickSlotWebAPI.Models.Response
     {
         public int Id{ get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
         public int OfferingsCount { get; set; }
+        public double Rating { get; set; }
+        public int ReviewsCount { get; set; }
     }
 }

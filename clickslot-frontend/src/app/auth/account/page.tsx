@@ -192,7 +192,7 @@ const AccountPage: React.FC = () => {
                 </button>
             <button
               type="button"
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+              className="px-8 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
               onClick={() => {
                 // Логика выхода
                 localStorage.removeItem('token');
@@ -206,8 +206,11 @@ const AccountPage: React.FC = () => {
           {/* Дополнительные кнопки для мастера */}
           {user.role === 1 && (
             <div className="mt-4 flex justify-between">
-              <Link href="/schedule" className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
+              <Link href="/schedule" className="px-3 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
                 Моё расписание
+              </Link>
+              <Link href="/bookings" className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
+                Мои записи
               </Link>
               <Link href="/offerings" className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
                 Мои услуги

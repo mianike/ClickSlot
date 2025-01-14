@@ -41,6 +41,7 @@ namespace ClickSlotCore.Services.Entity
             var offering = await repository
                 .AsReadOnlyQueryable()
                 .Where(o => o.MasterId == masterId)
+                .OrderBy(o=>o.Name)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<OfferingDTO>>(offering);

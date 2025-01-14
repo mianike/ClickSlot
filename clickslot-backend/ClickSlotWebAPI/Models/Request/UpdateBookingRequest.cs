@@ -1,4 +1,5 @@
 ﻿using ClickSlotModel.Enums;
+using ClickSlotWebAPI.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace ClickSlotWebAPI.Models.Request
@@ -13,13 +14,12 @@ namespace ClickSlotWebAPI.Models.Request
 
         [Required]
         [DataType(DataType.DateTime)]
+        [AtLeastNowDateTime]
         public DateTime StartTime { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
+        [AtLeastNowDateTime]
         public DateTime EndTime { get; set; }
-
-        [Required]
-        public BookingStatus Status { get; set; }
     }
 }

@@ -171,8 +171,8 @@ export default function NewBookingPage() {
         <>
           <div className="text-center mb-6">
             <h2 className="text-2xl font-semibold">{master.name}</h2>
-            <h3>{offering.name}</h3>
-            <h3>{offering.price} руб.</h3>
+            <h2 className="text-xl font-semibold">{offering.name}</h2>
+            <h3>Стоимость: {offering.price} руб.</h3>
             <h3>Продолжительность {offering.duration} </h3>
           </div>
 

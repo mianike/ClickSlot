@@ -14,5 +14,6 @@ namespace ClickSlotModel.DTOs
         public string IdentityUserId { get; set; }
         public ICollection<OfferingDTO> Offerings { get; set; }
         public IEnumerable<ScheduleDTO> Schedules { get; set; }
+        public ICollection<ReviewDTO> MasterReviews { get; set; }
     }
 }
