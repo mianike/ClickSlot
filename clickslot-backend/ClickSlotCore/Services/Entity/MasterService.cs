@@ -25,8 +25,7 @@ namespace ClickSlotCore.Services.Entity
 
         public async Task<IEnumerable<AppUserDTO>> GetFiltredAsync(string search, int page, int pageSize)
         {
-            try
-            {
+            
                 var repository = _unitOfWork.GetRepository<AppUser>();
 
                 IQueryable<AppUser> query = repository
@@ -48,18 +47,11 @@ namespace ClickSlotCore.Services.Entity
                     .ToListAsync();
 
                 return _mapper.Map<IEnumerable<AppUserDTO>>(appUsers);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Error occurred while retrieving masters: {ex.Message}", ex);
-            }
         }
 
         public async Task<AppUserDTO> GetMasterByIdAsync(int id)
         {
-            try
-            {
-                var repository = _unitOfWork.GetRepository<AppUser>();
+            var repository = _unitOfWork.GetRepository<AppUser>();
 
                 var appUser = await repository
                     .AsReadOnlyQueryable()
@@ -76,11 +68,6 @@ namespace ClickSlotCore.Services.Entity
                 }
 
                 return _mapper.Map<AppUserDTO>(appUser);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Error occurred while retrieving master: {ex.Message}", ex);
-            }
         }
 
         public async Task<IEnumerable<DateTime>> GetSlotsAsync(int masterId, int offeringId, DateTime date)
@@ -88,12 +75,12 @@ namespace ClickSlotCore.Services.Entity
             var offering = await _offeringService.GetByIdAsync(offeringId);
             if (offering == null)
             {
-                throw new ArgumentException($"Offering by id {offeringId} not found");
+                throw new ArgumentException($"Offering with id {offeringId} not found");
             }
 
             var repository = _unitOfWork.GetRepository<Booking>();
 
-            //при сравнении дат костыль, т.к. скорее всего из-за конвертёра они при обычном Equals отличаются)
+            //При сравнении дат костыль, т.к. скорее всего из-за конвертёра они при обычном Equals отличаются)
             var existingBookings = await repository
                 .AsReadOnlyQueryable()
                 .Where(b => b.MasterId == masterId
@@ -122,7 +109,7 @@ namespace ClickSlotCore.Services.Entity
                     availableSlots.Add(startTime);
                 }
 
-                // Шаг между слотами
+                //Шаг между слотами
                 startTime = startTime.AddMinutes(15);
             }
 
