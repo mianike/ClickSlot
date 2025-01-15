@@ -36,16 +36,15 @@ const LoginPage: React.FC = () => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      setServerMessage(null); // Сброс предыдущего сообщения
+      setServerMessage(null);
       const response = await axiosInstance.post<LoginResponse>("/auth/login", data);
       const { token } = response.data;
       localStorage.setItem("token", token);
 
-      router.push("/"); // Редирект на главную страницу после входа
+      router.push("/");
       console.log("Login successful", response.data);
     } catch (error: any) {
       if (error.response) {
-        // Обработка ошибок авторизации
         if (error.response.data.message) {
           setServerMessage(error.response.data.message);
         } else {

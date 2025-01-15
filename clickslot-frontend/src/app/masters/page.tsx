@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axiosInstance from '../api/axiosInstance'; // Путь к вашему axiosInstance
+import axiosInstance from '../api/axiosInstance';
 import Link from 'next/link';
 import { useRouter} from 'next/navigation';
 
@@ -18,13 +18,12 @@ export default function MastersPage() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10); // фиксируем размер страницы
+  const [pageSize] = useState(10);
   const router = useRouter();
 
   const fetchMasters = async (searchQuery: string, pageNumber: number) => {
     setLoading(true);
     try {
-      // Используем axios для запроса
       const response = await axiosInstance.get('/masters', {
         params: {
           search: searchQuery,
@@ -33,7 +32,6 @@ export default function MastersPage() {
         },
       });
 
-      // Приводим тип ответа к Master[]
       setMasters(response.data as Master[]);
     } catch (error) {
       console.error('Failed to fetch masters', error);
@@ -43,12 +41,11 @@ export default function MastersPage() {
   };
 
   useEffect(() => {
-    // Загрузка всех мастеров при первом рендере
     fetchMasters('', currentPage);
   }, [currentPage]);
 
   const handleSearch = () => {
-    setCurrentPage(1); // При новом поиске сбрасываем страницу на первую
+    setCurrentPage(1);
     fetchMasters(search, 1);
   };
 
@@ -57,7 +54,7 @@ export default function MastersPage() {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-10 mt-4 mb-4"> {/* Добавлены отступы с боков */}
+    <div className="px-4 sm:px-6 lg:px-10 mt-4 mb-4">
       <h1 className="text-2xl font-bold mb-4">Мастера</h1>
 
       <div className="mb-4 flex gap-4">
@@ -91,7 +88,7 @@ export default function MastersPage() {
               <h3 className="mt-4 font-semibold text-lg text-gray-600">Услуг: {master.offeringsCount}</h3>
               <h3 className="mt-4 font-semibold text-wrap text-gray-600">Рейтинг: {master.rating} (Отз: {master.reviewsCount})</h3>
               <button
-                onClick={() => handleMasterOfferings(master.id)} // Переход на страницу записи
+                onClick={() => handleMasterOfferings(master.id)}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
               >
                 Выбрать
@@ -102,7 +99,7 @@ export default function MastersPage() {
       )}
 
       {/* Пагинация */}
-      <div className="flex flex-col items-center p-20 min-h-screen bg-gray-100">{/* Пагинация */}
+      <div className="flex flex-col items-center p-20 min-h-screen bg-gray-100">
       <div className="flex gap-4 mt-8">
         <button
           disabled={currentPage === 1 || loading}

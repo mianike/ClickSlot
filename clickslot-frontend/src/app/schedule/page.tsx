@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // Стили календаря
+import "react-calendar/dist/Calendar.css";
 import axiosInstance from "../api/axiosInstance";
 import { useRouter } from 'next/navigation';
 import "../../styles/calendarStyles.css";
 
 interface Schedule {
   id: number;
-  date: string; // ISO формат даты, например "2025-01-13"
-  startTime: string; // "09:00:00"
-  endTime: string; // "18:00:00"
+  date: string;
+  startTime: string;
+  endTime: string;
 }
 
 interface User {
@@ -80,7 +80,7 @@ export default function SchedulePage() {
     try {
       const newSchedule: Schedule = {
         id: 0,
-        date: selectedDate.toLocaleDateString('en-CA'), // Используем формат 'YYYY-MM-DD'
+        date: selectedDate.toLocaleDateString('en-CA'),
         startTime: `${startTime}:00`,
         endTime: `${endTime}:00`,
       };
@@ -149,7 +149,7 @@ export default function SchedulePage() {
   };
 
   const isWorkDay = (date: Date) => {
-    const formattedDate = date.toLocaleDateString('en-CA'); // Форматируем дату
+    const formattedDate = date.toLocaleDateString('en-CA');
     return schedules.some((schedule) => schedule.date === formattedDate);
   };
 
@@ -191,10 +191,10 @@ export default function SchedulePage() {
   const isWork = isWorkDay(date);
 
   if (isToday) {
-    return "bg-gray-300 text-black font-bold"; // Сегодняшний день
+    return "bg-gray-300 text-black font-bold";
   }
   if (isWork) {
-    return "workday"; // Добавляем класс для рабочих дней
+    return "workday";
   }
   return "";
 }}

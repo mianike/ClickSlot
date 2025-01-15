@@ -44,7 +44,7 @@ const RegisterPage: React.FC = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      setServerMessage(null); // Сбрасываем предыдущее сообщение об ошибке
+      setServerMessage(null);
       const response = await axiosInstance.post<RegisterResponse>('/auth/register', data);
       const { token, user } = response.data;
       localStorage.setItem('token', token);
@@ -53,7 +53,6 @@ const RegisterPage: React.FC = () => {
       console.log('User registered successfully', response.data);
     } catch (error: any) {
       if (error.response) {
-        // Обработка ошибок валидации
         if (error.response.data.errors) {
           const validationErrors = error.response.data.errors;
           for (const field in validationErrors) {
@@ -66,7 +65,6 @@ const RegisterPage: React.FC = () => {
           }
         }
 
-        // Обработка общего сообщения об ошибке
         if (error.response.data.message) {
           setServerMessage(error.response.data.message);
         } else {

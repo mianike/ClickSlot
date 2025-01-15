@@ -28,19 +28,18 @@ const OfferingsPage: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Получение данных пользователя
-      axiosInstance.get<User>('/auth/me') // Эндпоинт, возвращающий информацию о текущем пользователе
+      axiosInstance.get<User>('/auth/me')
         .then(response => {
           setUser(response.data);
-          setLoading(false); // Загрузка завершена
+          setLoading(false);
         })
         .catch(error => {
           console.error('Ошибка при получении данных пользователя:', error);
-          localStorage.removeItem('token'); // Если токен недействителен
-          setLoading(false); // Загрузка завершена, но с ошибкой
+          localStorage.removeItem('token');
+          setLoading(false);
         });
     } else {
-      setLoading(false); // Если токен не найден, сразу завершить загрузку
+      setLoading(false);
     }
   }, []);
 
@@ -48,7 +47,7 @@ const OfferingsPage: React.FC = () => {
     const fetchOfferings = async () => {
       if (user) {
         try {
-          const response = await axiosInstance.get<Offering[]>(`/offerings/master/${user.id}`); // Теперь правильная интерполяция
+          const response = await axiosInstance.get<Offering[]>(`/offerings/master/${user.id}`);
           setOfferings(response.data);
         } catch (err) {
           setError('Ошибка загрузки данных.');
@@ -96,14 +95,14 @@ const OfferingsPage: React.FC = () => {
               <button
                     type="button"
                     className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
-                    onClick={() => handleOfferingEdit(offering.id)} // Добавляем обработчик на кнопку редактирования
+                    onClick={() => handleOfferingEdit(offering.id)}
                 >
                     Редактировать
               </button>
               <button
                     type="button"
                     className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
-                    onClick={() => handleDelete(offering.id)} // Добавляем обработчик на кнопку удаления
+                    onClick={() => handleDelete(offering.id)}
                 >
                     Удалить
                 </button>

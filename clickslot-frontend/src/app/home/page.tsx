@@ -1,4 +1,4 @@
-'use client'; // Обязательно добавьте это
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../api/axiosInstance';
@@ -12,24 +12,23 @@ interface User {
 
 const HomePage: React.FC = () => {
   const [user, setUser] = useState<{ name: string } | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Получение данных пользователя
-      axiosInstance.get<User>('/auth/me') // Эндпоинт, возвращающий информацию о текущем пользователе
+      axiosInstance.get<User>('/auth/me')
         .then(response => {
           setUser(response.data);
-          setLoading(false); // Загрузка завершена
+          setLoading(false);
         })
         .catch(error => {
           console.error('Ошибка при получении данных пользователя:', error);
-          localStorage.removeItem('token'); // Если токен недействителен
-          setLoading(false); // Загрузка завершена, но с ошибкой
+          localStorage.removeItem('token');
+          setLoading(false);
         });
     } else {
-      setLoading(false); // Если токен не найден, сразу завершить загрузку
+      setLoading(false);
     }
   }, []);
 
@@ -40,13 +39,9 @@ const HomePage: React.FC = () => {
       </h1>  
       <p className="text-lg text-gray-600 mb-10">ClickSlot - удобный сервис бронирования услуг</p>
 
-      {/* Контейнер для кнопок с горизонтальным расположением */}
-      <div className="flex space-x-4 mb-6"> {/* Добавлен space-x-4 для горизонтального расстояния */}
-        {/* Кнопка Список мастеров всегда видна */}
-        
+      <div className="flex space-x-4 mb-6">        
 
         {loading ? (
-          // Индикатор загрузки
           <p>Загрузка...</p>
         ) : user ? (
             <div className="flex space-x-6">

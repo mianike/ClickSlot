@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Для использования изображения
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   return (
@@ -12,11 +12,11 @@ const Header: React.FC = () => {
         <div className="flex items-center">
             <Link href="/" className="ml-3 text-2xl font-bold flex items-center">
                 <Image
-                    src="/logo.svg" // Путь к вашему логотипу
+                    src="/logo.svg"
                     alt="Logo"
-                    width={40} // Ширина логотипа
-                    height={40} // Высота логотипа
-                    className="mr-2" // Отступ между логотипом и текстом
+                    width={40}
+                    height={40}
+                    className="mr-2"
                 />
                 <span>ClickSlot</span>
             </Link>

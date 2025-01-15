@@ -18,10 +18,10 @@ const validationSchema = yup.object({
 export default function NewReviewPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const masterId = searchParams.get('masterId'); // Получаем masterId из query параметров
+  const masterId = searchParams.get('masterId');
 
-  const [rating, setRating] = useState(0); // Для выбора рейтинга
-  const [hover, setHover] = useState(0); // Для отображения выделенных звезд
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +32,7 @@ export default function NewReviewPage() {
       try {
         await axiosInstance.post('/review', {
           masterId,
-          rating, // Передаем рейтинг
+          rating,
           comment: values.comment,
         });
         alert('Отзыв успешно отправлен!');
@@ -58,9 +58,9 @@ export default function NewReviewPage() {
                   star <= (hover || rating) ? 'text-yellow-500' : 'text-gray-300'
                 }`}
                 size={30}
-                onMouseEnter={() => setHover(star)} // Подсветка звезды при наведении
-                onMouseLeave={() => setHover(0)} // Убираем подсветку при уходе мыши
-                onClick={() => setRating(star)} // Установка рейтинга
+                onMouseEnter={() => setHover(star)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => setRating(star)}
               />
             ))}
           </div>

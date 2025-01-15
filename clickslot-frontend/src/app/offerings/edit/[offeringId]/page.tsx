@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation'; // Для получения параметров маршрута
+import { useRouter, usePathname } from 'next/navigation';
 import axiosInstance from '../../../api/axiosInstance';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -20,19 +20,17 @@ const validationSchema = Yup.object({
 });
 
 const EditOfferingPage: React.FC = () => {
-  const pathname = usePathname(); // Получаем текущий путь, чтобы извлечь параметр
-  const offeringId = pathname.split('/').pop(); // Извлекаем offeringId из URL
+  const pathname = usePathname();
+  const offeringId = pathname.split('/').pop();
   const [offeringData, setOfferingData] = useState<OfferingData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Преобразование времени из формата "hh:mm:ss" в минуты
   const convertTimeToMinutes = (time: string): number => {
     const [hours, minutes, seconds] = time.split(':').map(Number);
     return hours * 60 + minutes + seconds / 60;
   };
 
-  // Загрузка данных услуги
   useEffect(() => {
     const fetchOffering = async () => {
       if (offeringId) {
@@ -55,21 +53,19 @@ const EditOfferingPage: React.FC = () => {
       duration: offeringData ? convertTimeToMinutes(offeringData.duration) : 0,
     },
     validationSchema,
-    enableReinitialize: true, // Позволяет обновить начальные значения формы при изменении offeringData
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        // Преобразуем duration в формат hh:mm:ss перед отправкой
         const hours = Math.floor(values.duration / 60);
         const minutes = values.duration % 60;
         const formattedDuration = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
 
-        // Отправляем обновленные данные на сервер
         await axiosInstance.put(`/offerings/${offeringId}`, {
           ...values,
           duration: formattedDuration,
         });
 
-        router.push('/offerings'); // Перенаправление на страницу списка услуг
+        router.push('/offerings');
       } catch (err) {
         setError('Ошибка при обновлении услуги.');
       }

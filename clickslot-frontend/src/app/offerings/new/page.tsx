@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import axiosInstance from '../../api/axiosInstance';
 import { useRouter } from 'next/navigation';
 
-// Валидатор для формы
 const validationSchema = Yup.object({
   name: Yup.string().required('Имя услуги обязательно'),
   price: Yup.number().required('Цена обязательна').min(0, 'Цена не может быть отрицательной'),
@@ -17,7 +16,6 @@ const NewOfferingPage: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  // Функция для преобразования минут в формат hh:mm:ss
   const convertMinutesToTime = (minutes: number): string => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -25,7 +23,6 @@ const NewOfferingPage: React.FC = () => {
     return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  // Инициализация Formik
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -35,16 +32,14 @@ const NewOfferingPage: React.FC = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        // Преобразуем duration в формат hh:mm:ss перед отправкой на сервер
         const formattedDuration = convertMinutesToTime(values.duration);
         
-        // Отправляем данные на сервер
         await axiosInstance.post('/offerings', {
           ...values,
-          duration: formattedDuration, // Используем преобразованную длительность
+          duration: formattedDuration,
         });
         
-        router.push('/offerings'); // Перенаправление на страницу списка услуг
+        router.push('/offerings');
       } catch (err) {
         setError('Ошибка при создании услуги.');
       }
@@ -56,7 +51,7 @@ const NewOfferingPage: React.FC = () => {
       <h1 className="text-3xl font-semibold text-center mb-6">Добавить услугу</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Имя услуги</label>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Услуга</label>
           <input
             id="name"
             type="text"
@@ -82,7 +77,7 @@ const NewOfferingPage: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Длительность (мин)</label>
+          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Продолжительность (мин)</label>
           <input
             id="duration"
             type="number"

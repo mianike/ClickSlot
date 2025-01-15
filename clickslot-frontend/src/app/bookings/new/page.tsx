@@ -113,13 +113,13 @@ export default function NewBookingPage() {
   const handleDateChange = (value: any) => {
     if (value instanceof Date) {
       setSelectedDate(value);
-      setSelectedSlot(null); // Сбрасываем выбранный слот
+      setSelectedSlot(null);
     } else if (Array.isArray(value)) {
       setSelectedDate(value[0] || null);
-      setSelectedSlot(null); // Сбрасываем выбранный слот
+      setSelectedSlot(null);
     } else {
       setSelectedDate(null);
-      setSelectedSlot(null); // Сбрасываем выбранный слот
+      setSelectedSlot(null);
     }
   };
 
@@ -127,11 +127,9 @@ export default function NewBookingPage() {
     if (!selectedDate || !master || !offering || !selectedSlot) return;
   
     try {
-      // Создаем DateTime для начала записи
       const startDateTime = new Date(selectedDate);
       startDateTime.setHours(selectedSlot.getHours(), selectedSlot.getMinutes());
   
-      // Создаем DateTime для окончания записи
       const endDateTime = new Date(startDateTime);
       endDateTime.setMinutes(
         startDateTime.getMinutes() + (parseInt(offering.duration.split(":")[0]) * 60 + parseInt(offering.duration.split(":")[1]))
@@ -189,7 +187,7 @@ export default function NewBookingPage() {
       formattedDate === selectedDate.toLocaleDateString("en-CA");
 
     if (isSelected) {
-      return "selected-date"; // Класс для выбранной даты
+      return "selected-date";
     }
     if (isToday) {
       return "bg-gray-300 text-black font-bold";

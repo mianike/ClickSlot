@@ -28,10 +28,9 @@ export default function MasterBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [currentPage, setCurrentPage] = useState(1); // Текущая страница
-  const pageSize = 10; // Количество записей на странице
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
-  // Получение данных текущего пользователя
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -52,7 +51,6 @@ export default function MasterBookingsPage() {
     }
   }, []);
 
-  // Получение записей для мастера
   const fetchBookings = async (page: number) => {
     if (!user) return;
 
@@ -69,14 +67,12 @@ export default function MasterBookingsPage() {
     }
   };
 
-  // Загрузка записей при изменении пользователя или страницы
   useEffect(() => {
     if (user) {
       fetchBookings(currentPage);
     }
   }, [user, currentPage]);
 
-  // Группировка записей по дням
   const groupBookingsByDate = (bookings: Booking[]) => {
     const groupedBookings: { [key: string]: Booking[] } = {};
 
@@ -91,7 +87,6 @@ export default function MasterBookingsPage() {
     return groupedBookings;
   };
 
-  // Удаление записи
   const handleDeleteBooking = async (id: number) => {
     try {
       await axiosInstance.delete(`/bookings/${id}`);

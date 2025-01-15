@@ -1,4 +1,4 @@
-'use client'; // Обязательно добавьте это
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosInstance';
@@ -28,37 +28,34 @@ interface User {
 const AccountPage: React.FC = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Получаем данные текущего пользователя и его роль
       axiosInstance.get<User>('/auth/me')
         .then(response => {
-          setUser(response.data); // Заполняем данные пользователя
-          setLoading(false); // Загрузка завершена
+          setUser(response.data);
+          setLoading(false);
         })
         .catch(error => {
           console.error('Ошибка при получении данных пользователя:', error);
-          localStorage.removeItem('token'); // Если токен недействителен
+          localStorage.removeItem('token');
           setError('Ошибка при загрузке данных пользователя.');
-          setLoading(false); // Загрузка завершена с ошибкой
+          setLoading(false);
         });
     } else {
-      setLoading(false); // Если токен не найден, сразу завершить загрузку
+      setLoading(false);
     }
   }, []);
 
-  // Валидация формы с помощью Yup
   const validationSchema = Yup.object({
     name: Yup.string().required('Имя обязательно'),
     phone: Yup.string().matches(/^\+?\d{10,14}$/, 'Неверный формат номера телефона').required('Телефон обязателен'),
     address: Yup.string(),
   });
 
-  // Инициализация формы с помощью Formik
   const formik = useFormik({
     initialValues: {
       name: user?.name || '',
@@ -72,10 +69,10 @@ const AccountPage: React.FC = () => {
 
         axiosInstance.put<UpdatedResponse>('/auth/update', updatedUser)
           .then(response => {
-            const newToken = response.data.token; // Получаем новый токен из ответа
-            localStorage.setItem('token', newToken); // Обновляем токен в localStorage
+            const newToken = response.data.token;
+            localStorage.setItem('token', newToken);
             alert('Профиль обновлён');
-            setUser({ ...updatedUser, email: user.email }); // Обновляем состояние пользователя с ролью и email
+            setUser({ ...updatedUser, email: user.email });
             router.push('/');
             console.log('User updated successfully', response.data);
           })
@@ -87,10 +84,8 @@ const AccountPage: React.FC = () => {
     },
   });
 
-  // Подставляем данные пользователя в форму после загрузки
   useEffect(() => {
     if (user) {
-      // Сравниваем текущие значения формы с данными пользователя, чтобы избежать лишних вызовов
       if (
         formik.values.name !== user.name ||
         formik.values.phone !== user.phone ||
@@ -103,7 +98,7 @@ const AccountPage: React.FC = () => {
         });
       }
     }
-  }, [user]); // Указываем только `user` в зависимостях
+  }, [user]);
 
   if (loading) {
     return <p>Загрузка...</p>;
@@ -186,7 +181,7 @@ const AccountPage: React.FC = () => {
             <button
                     type="button"
                     className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
-                    onClick={handleDeleteAccount} // Добавляем обработчик на кнопку удаления
+                    onClick={handleDeleteAccount}
                 >
                     Удалить аккаунт
                 </button>
@@ -194,7 +189,7 @@ const AccountPage: React.FC = () => {
               type="button"
               className="px-8 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
               onClick={() => {
-                // Логика выхода
+                
                 localStorage.removeItem('token');
                 window.location.href = '/';
               }}
@@ -203,7 +198,7 @@ const AccountPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Дополнительные кнопки для мастера */}
+          {/* Кнопки для мастера */}
           {user.role === 1 && (
             <div className="mt-4 flex justify-between">
               <Link href="/schedule" className="px-3 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
