@@ -16,7 +16,7 @@ interface OfferingData {
 const validationSchema = Yup.object({
   name: Yup.string().required('Имя услуги обязательно'),
   price: Yup.number().required('Цена обязательна').min(0, 'Цена не может быть отрицательной'),
-  duration: Yup.number().required('Длительность обязательна').min(1, 'Минимум 1 минута').max(1000),
+  duration: Yup.number().required('Продолжительность обязательна').min(1, 'Минимум 1 минута').max(1000),
 });
 
 const EditOfferingPage: React.FC = () => {
