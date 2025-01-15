@@ -84,7 +84,16 @@ const OfferingsPage: React.FC = () => {
           Добавить услугу
         </Link>
       </div>
-
+      {/* Кнопка назад */}
+      <div className="w-full text-left mb-4">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+          <span className="mr-1">&larr;</span> 
+          Назад
+        </button>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {offerings.map(offering => (
           <div key={offering.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col">

@@ -48,6 +48,16 @@ export default function NewReviewPage() {
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
       <h1 className="text-2xl font-bold mb-4">Оставить отзыв</h1>
       <form onSubmit={formik.handleSubmit}>
+        {/* Кнопка назад */}
+      <div className="w-full text-left mb-4">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+          <span className="mr-1">&larr;</span> 
+          Назад
+        </button>
+      </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Рейтинг</label>
           <div className="flex">

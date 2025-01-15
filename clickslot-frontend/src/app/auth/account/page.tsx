@@ -129,6 +129,16 @@ const AccountPage: React.FC = () => {
 
       {user ? (
         <form onSubmit={formik.handleSubmit} className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+          {/* Кнопка назад */}
+          <div className="w-full text-left mb-2">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+              <span className="mr-1">&larr;</span> 
+              Назад
+            </button>
+          </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Имя</label>
             <input

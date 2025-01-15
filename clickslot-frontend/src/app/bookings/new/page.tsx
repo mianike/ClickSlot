@@ -167,7 +167,7 @@ export default function NewBookingPage() {
 
       {master && offering && (
         <>
-          <div className="text-center mb-6">
+          <div className="text-center mb-4">
             <h2 className="text-2xl font-semibold">{master.name}</h2>
             <h2 className="text-xl font-semibold">{offering.name}</h2>
             <h3>Стоимость: {offering.price} руб.</h3>
@@ -175,30 +175,40 @@ export default function NewBookingPage() {
           </div>
 
           <div className="mb-6">
-          <Calendar
-  onChange={handleDateChange}
-  value={selectedDate}
-  tileClassName={({ date }) => {
-    const formattedDate = date.toLocaleDateString("en-CA");
-    const isToday = formattedDate === new Date().toLocaleDateString("en-CA");
-    const isWork = isWorkDay(date);
-    const isSelected =
-      selectedDate &&
-      formattedDate === selectedDate.toLocaleDateString("en-CA");
+            {/* Кнопка назад */}
+            <div className="w-full text-left mb-2">
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+                <span className="mr-1">&larr;</span>
+                Назад
+              </button>
+            </div>
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              tileClassName={({ date }) => {
+                const formattedDate = date.toLocaleDateString("en-CA");
+                const isToday = formattedDate === new Date().toLocaleDateString("en-CA");
+                const isWork = isWorkDay(date);
+                const isSelected =
+                  selectedDate &&
+                  formattedDate === selectedDate.toLocaleDateString("en-CA");
 
-    if (isSelected) {
-      return "selected-date";
-    }
-    if (isToday) {
-      return "bg-gray-300 text-black font-bold";
-    }
-    if (isWork) {
-      return "workday";
-    }
-    return "";
-  }}
-  className="rounded-lg shadow-md"
-/>
+                if (isSelected) {
+                  return "selected-date";
+                }
+                if (isToday) {
+                  return "bg-gray-300 text-black font-bold";
+                }
+                if (isWork) {
+                  return "workday";
+                }
+                return "";
+              }}
+              className="rounded-lg shadow-md"
+            />
           </div>
 
           {selectedDate && (

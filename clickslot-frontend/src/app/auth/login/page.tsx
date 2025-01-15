@@ -61,6 +61,16 @@ const LoginPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <h1 className="text-3xl font-bold text-gray-800">Вход</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md space-y-4">
+        {/* Кнопка назад */}
+        <div className="w-full text-left">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+            <span className="mr-1">&larr;</span> 
+            Назад
+          </button>
+        </div>
         {/* Общая ошибка */}
         {serverMessage && (
           <p className="text-red-500 text-center text-sm">{serverMessage}</p>

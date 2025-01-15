@@ -50,6 +50,16 @@ const NewOfferingPage: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 mt-6 mb-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-semibold text-center mb-6">Добавить услугу</h1>
       <form onSubmit={formik.handleSubmit}>
+        {/* Кнопка назад */}
+        <div className="w-full text-left mb-2">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+            <span className="mr-1">&larr;</span> 
+            Назад
+          </button>
+      </div>
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Услуга</label>
           <input

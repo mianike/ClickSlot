@@ -180,8 +180,17 @@ export default function SchedulePage() {
   return (
     <div className="flex flex-col items-center p-4 min-h-screen bg-gray-100">
       <h1 className="text-3xl font-bold mb-6 text-center">Моё расписание</h1>
-
       <div className="mb-6">
+        {/* Кнопка назад */}
+        <div className="w-full text-left mb-4">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+            <span className="mr-1">&larr;</span> 
+            Назад
+          </button>
+        </div>
         <Calendar
           onChange={handleDateChange}
           value={selectedDate}

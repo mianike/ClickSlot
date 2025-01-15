@@ -80,7 +80,17 @@ export default function MasterDetailPage() {
       </div>
 
       <h2 className="text-xl font-semibold mt-6">Услуги</h2>
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8 px-10 w-full">
+      {/* Кнопка назад */}
+      <div className="w-full text-left px-10">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+          <span className="mr-1">&larr;</span> 
+          Назад
+        </button>
+      </div>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 px-10 w-full">
         {master.offerings.length > 0 ? (
           master.offerings.map((offering) => (
             <div
@@ -103,8 +113,8 @@ export default function MasterDetailPage() {
         )}
       </div>
 
-      <h2 className="text-xl font-semibold mt-10">Последние 15 отзывов</h2>
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-6 px-10 w-full">
+      <h2 className="text-xl font-semibold mt-6">Последние 15 отзывов</h2>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-4 px-10 w-full">
         {master.masterReviews.slice(0, 15).map((review) => (
           <div
             key={review.id}

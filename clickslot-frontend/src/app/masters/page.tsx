@@ -55,8 +55,17 @@ export default function MastersPage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-10 mt-4 mb-4">
-      <h1 className="text-2xl font-bold mb-4">Мастера</h1>
-
+      <h1 className="text-2xl font-bold mb-2">Мастера</h1>
+      {/* Кнопка назад */}
+      <div className="w-full text-left mb-2">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+          <span className="mr-1">&larr;</span> 
+          Назад
+        </button>
+      </div>
       <div className="mb-4 flex gap-4">
         <input
           type="text"

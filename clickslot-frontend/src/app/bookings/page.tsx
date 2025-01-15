@@ -110,12 +110,21 @@ export default function MasterBookingsPage() {
   return (
     <div className="flex flex-col items-center p-20 min-h-screen bg-gray-100">
       <h1 className="text-3xl font-bold mb-6 text-center">Записи мастера</h1>
-
+      {/* Кнопка назад */}
+      <div className="w-full text-left">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-sm text-gray-600 hover:text-gray-800 flex items-center">
+          <span className="mr-1">&larr;</span> 
+          Назад
+        </button>
+      </div>
       {Object.keys(groupedBookings).length === 0 ? (
         <p>Нет записей для отображения.</p>
       ) : (
         Object.keys(groupedBookings).map((date) => (
-          <div key={date} className="mb-8 w-full">
+          <div key={date} className="mt-2 mb-8 w-full">
             <h2 className="text-2xl font-bold mb-4">
               {new Date(date).toLocaleDateString()}
             </h2>
