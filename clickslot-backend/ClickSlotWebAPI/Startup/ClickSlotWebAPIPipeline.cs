@@ -19,6 +19,7 @@ namespace ClickSlotWebAPI.Startup
             app.UseAuthorization();
 
             app.UseMiddleware<CurrentAppUserMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.MapControllers();
 

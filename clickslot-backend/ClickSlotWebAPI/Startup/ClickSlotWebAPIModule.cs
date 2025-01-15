@@ -7,6 +7,7 @@ using System.Text;
 using ClickSlotCore;
 using ClickSlotWebAPI.Mapping;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace ClickSlotWebAPI.Startup
 {
@@ -25,6 +26,8 @@ namespace ClickSlotWebAPI.Startup
                         .AllowAnyHeader();
                 });
             });
+
+            AddSerilog(builder);
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -103,6 +106,33 @@ namespace ClickSlotWebAPI.Startup
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
                 };
             });
+        }
+
+        private static void AddSerilog(WebApplicationBuilder builder)
+        {
+            var loggerConfiguration = new LoggerConfiguration()
+                .WriteTo.PostgreSQL(
+                    connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+                    tableName: "logs",
+                    needAutoCreateTable: true);
+
+            loggerConfiguration = loggerConfiguration.Enrich.FromLogContext();
+
+            if (builder.Environment.IsDevelopment())
+            {
+                loggerConfiguration = loggerConfiguration.MinimumLevel.Debug();
+            }
+            else
+            {
+                loggerConfiguration = loggerConfiguration.MinimumLevel.Warning();
+            }
+
+            var logger = loggerConfiguration.CreateLogger();
+
+            //Не используем его глобально
+            //builder.Host.UseSerilog(); 
+            
+            builder.Services.AddSingleton<Serilog.ILogger>(logger);
         }
     }
 }
